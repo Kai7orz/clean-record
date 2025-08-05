@@ -1,0 +1,4 @@
+.env
+backend/.env
+backend/app/assets/images/
+db/data

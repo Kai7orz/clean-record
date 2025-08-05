@@ -1,0 +1,10 @@
+fastapi 
+uvicorn
+openai
+opencv-contrib-python
+pillow
+python-multipart
+python-dotenv
+supabase
+mysqlclient 
+sqlalchemy
