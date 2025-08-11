@@ -1,16 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import api.users 
+import api.categories
 from pydantic import BaseModel 
 from typing import Union 
 from model import create_table
-
-
-class Item(BaseModel):
-    name: str 
-    description: Union[str,None] = None 
-    price: float 
-    tax: Union[float,None] = None
 
 app = FastAPI() 
 
@@ -27,12 +21,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-#テーブル構築
-create_table()
-
+# Nuxt が起動時にDB 設定のために呼び出す
 @app.get("/") 
 def read_root():
-    images = [{"message":"Hello World!"},{"message":"hello image"}]
-    return images
+    #テーブル構築
+    create_table()
+    completed_message = {"message":"DB setting finished"}
+    return completed_message
 
 app.include_router(api.users.router)
+app.include_router(api.categories.category_router)

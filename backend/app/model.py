@@ -1,8 +1,3 @@
-from typing import Optional
-from sqlalchemy import ForeignKey,Column,Integer,String,TIMESTAMP,PrimaryKeyConstraint
-from sqlalchemy.orm import relationship 
-from sqlalchemy.schema import FetchedValue
-from pydantic import BaseModel 
 from db import Base 
 from db import ENGINE 
 

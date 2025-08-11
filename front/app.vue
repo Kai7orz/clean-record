@@ -1,5 +1,5 @@
 <template>
-  <v-app class="base-style">
+  <v-app theme="dark">
   <div>
       <div class="polygon-bg">
         <div class="polygon"></div>
@@ -20,15 +20,9 @@ const alert = (msg: string) => {
 </script>
 
 <style>
-  .base-style{
-    background-color:black;
-  }
-  .base-style {
-    background-color: black;
-    position: relative;
-    overflow: hidden;
-    min-height: 100vh;
-  }
+.v-application {
+  background-color: black;
+}
 
   .polygon-bg {
     position: absolute;

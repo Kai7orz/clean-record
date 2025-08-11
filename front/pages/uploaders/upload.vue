@@ -1,5 +1,4 @@
 <script setup lang="ts">
-    import Card from '@/components/Card.vue';
 
     const fileInput = ref<HTMLInputElement | null >(null)
     const responsedUrl = ref<string>("")
@@ -33,29 +32,22 @@
             </v-btn>
     </div>
     <!-- プレビュー画像 と レスポンスが像が欲しい -->
-
     <div class="flex justify-center">
         <!-- プレビュー画像-->
         <div v-if='previewUrl!=""' class=" w-1/3 flex flex-col flex-wrap md:flex-row md:justify-center m-10 ">
-            <Card :image_url=previewUrl>
+            <UiImageCard :image_url=previewUrl>
                 <template #title>
-                    <h1>  </h1>
+
                 </template>
-            </Card>
+            </UiImageCard>
         </div>
     <!-- レスポンス -->
         <div v-if='responsedUrl!="" ' class="w-1/3 flex flex-col flex-wrap md:flex-row md:justify-center m-10 ">
-            <Card :image_url=responsedUrl>
+            <UiImageCard :image_url=responsedUrl>
                 <template #title>
                     <h1> カード名 </h1>
                 </template>
-            </Card>
+            </UiImageCard>
         </div>
     </div>  
 </template>
-
-<style>
-    body{
-        background-color:black;
-    }
-</style>

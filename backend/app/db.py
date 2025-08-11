@@ -3,7 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session,Session
 
 # 小規模なのでsession は分けずにdb.py に記述
-host = "db:3308"
+host = "db:3306"
 db_name = "sample_db"
 user = "mysqluser"
 password = "mysqlpass" 

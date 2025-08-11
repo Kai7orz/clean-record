@@ -1,25 +1,26 @@
 from model import create_table 
-from models.user import Users,UserCreate
-from models.record import Records,RecordCreate 
-from models.image import Images,ImageCreate 
-from models.category import Categories,CategoryCreate
+from models.user import User,UserCreate
+from models.record import Record,RecordBase,RecordOutput
+from models.image import Image,ImageCreate 
+from models.category import Category,CategoryBase
+from models.relations import CategoryRecord
 from sqlalchemy.orm import Session
+
 
 # テーブル構築
 create_table() 
 
 # # Create 処理群
-# def InsertUser():
-#     # User テーブルへのInsert 処理
-#     users = session.query(Users).all()
-#     print("Users Before Inserting:",users)
-#     # Pydantic オブジェクトでuser 生成
-#     test_user = UserCreate(user_name="name_test",email="name@example.com",age=10)
-#     # DB に適用するためにSQLAlchemy オブジェクトを Pydanticオブジェクトを基に生成
-#     db_test_user = Users(**test_user.dict())
-#     # DB へ追加するための処理
-#     session.add(db_test_user) 
-#     session.commit()
+def insert_user(session:Session,user_name:str,email:str,age:int):
+    # User テーブルへのInsert 処理
+    users = session.query(User).all()
+    # Pydantic オブジェクトでuser 生成
+    test_user = UserCreate(user_name=user_name,email=email,age=age)
+    # DB に適用するためにSQLAlchemy オブジェクトを Pydanticオブジェクトを基に生成
+    db_test_user = User(**test_user.dict())
+    # DB へ追加するための処理
+    session.add(db_test_user) 
+    session.commit()
 
 #     users = session.query(Users).all()
 #     print("Users After Inserting:",users)
@@ -38,31 +39,34 @@ create_table()
 
 #     print("Categories After Inserting:",categories)
 
-# def InsertRecord():
-#     records = session.query(Records).all() 
-#     print("Records Before Inserting:",records)
-#     test_record = RecordCreate(record_name="test用のレコード")
-#     db_test_record = Records(**test_record.dict())
+# def insert_record(session:Session,user_id:int,category_id:int,record_name:str):
+
+#     #user　で User 情報取得する必要があるかも
+
+#     user = session.query(Users).filter(Users.user_id == user_id).first()
+    
+#     test_record = RecordCreate(record_name=record_name)
+#     db_test_record = Records(
+#             **test_record.dict(),
+#             user_id = user.user_id,
+#             category_id = category_id,
+#                              )
 
 #     session.add(db_test_record) 
 #     session.commit() 
 
-#     records = session.query(Records).all() 
 
-#     print("Records After Inserting:",records)
     
-# def InsertImage():
-#     images = session.query(Images).all() 
-#     print("Images Before Inserting:",images) 
-    
-#     test_image = ImageCreate(record_id=1,image_url="https://fjibxkzzwqkhzotywbdh.supabase.co/storage/v1/object/public/clean-up-bucket//illust.png",image_description="test description of image")
-#     db_test_image = Images(**test_image.dict())
+def insert_image(session: Session,record_id: int,image_url:str,image_description:str):
+    images = session.query(Image).all() 
 
-#     session.add(db_test_image)
-#     session.commit()
+    test_image = ImageCreate(record_id=record_id,image_url=image_url,image_description=image_description)
+    db_test_image = Image(**test_image.dict())
+
+    session.add(db_test_image)
+    session.commit()
     
-#     images = session.query(Images).all() 
-#     print("Images After Inserting:",images)
+    images = session.query(Image).all() 
 
 # # Read 処理群
 
@@ -109,5 +113,35 @@ create_table()
 def get_record_with_image(session: Session, record_id: int):
     # ユーザに対応したimage を取得する
     # クエリ発行
-    images = session.query(Images).filter(Images.record_id == record_id).all()
+    images = session.query(Image).filter(Image.record_id == record_id).all()
     return images
+
+# category に紐づいたレコードを定義する
+def insert_record(session: Session,record_create: RecordBase):
+    #insert 時に指定するpydantic の方はinsert 専用のものを指定するのか
+    # record 作成して，category.append を入れた後にadd commit 
+    record = Record(
+        record_name = record_create.record_name
+    )
+    print("Record_create:",record_create)
+    user = session.query(User).filter(User.user_id == record_create.user_id).first()
+    print("user found ->",user)
+    if(user==None):
+        print("user is not found")
+    category = session.query(Category).filter(Category.category_id == record_create.category_id ).first()
+    record.categories.append(category)
+    record.user=user
+
+    print("Insert Record -> user:",user ," category:",category," record:",record)
+
+    session.add(record) 
+    session.commit()
+
+def insert_category(session: Session, category_base:CategoryBase):
+    category = Category(
+        category_name = category_base.category_name
+    )
+    session.add(category)
+    session.commit()
+
+# 中間テーブルは。レコード挿入時に介入・カテゴリーインサートには関与しないという理解

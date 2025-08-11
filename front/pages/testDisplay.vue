@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import CardList from "@/containers/CardList.vue"
+    import CardList from "@/containers/CardList.vue"
 </script>
 
 <template>
-        <CardList />
+    <CardList />
 </template>
 
 <style>

@@ -1,15 +1,22 @@
 <script setup lang="ts"> 
     import UiCard from '@/components/UiCard.vue';
     import { register } from 'swiper/element/bundle';
+    import type { Image } from '@/containers/type.ts'
     register();
+
+    // emits でクリックされたときに イベントを発火させる，その際にどのrecord_id かの情報を親の CardList component に対して渡す
     // 親から images という配列を props として受け取る
-    type Image = {
-        record_id:number, 
-        image_id:number,
-        image_url:string,
-        image_description:string
-    }
+    
     const props = defineProps<{ images: Image[] | null}>()
+    
+    const emit = defineEmits<{
+        sendRecordId: [number]    
+    }>();
+
+    const handleSendRecordId = (record_id: number) => {
+        console.log("record_id->",record_id)
+        emit('sendRecordId',record_id)
+    }
 
 </script>
 
@@ -19,8 +26,10 @@
             <swiper-slide class="flex justify-center" v-for="image in images">
                 <ui-card 
                     class="m-5"
+                    :record_id = image.record_id
                     :image_url = image.image_url
                     :image_description = image.image_description
+                    @click-card="handleSendRecordId"
                 />
             </swiper-slide>
         </swiper-container>

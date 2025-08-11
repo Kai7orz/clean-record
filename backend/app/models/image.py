@@ -5,14 +5,14 @@ from pydantic import BaseModel
 from db import Base 
 
 # Images テーブル
-class Images(Base):
+class Image(Base):
     __tablename__ = 'images'
     record_id = Column(Integer,ForeignKey('records.record_id',ondelete="CASCADE"))
     image_id = Column(Integer,primary_key=True,autoincrement=True)
     image_url = Column(String(2048),nullable=False)
     image_description = Column(String(1024),nullable=True)
 
-    record = relationship("Records",back_populates="images")
+    record = relationship("Record",back_populates="images")
 
 class ImageCreate(BaseModel):
     record_id: int 
