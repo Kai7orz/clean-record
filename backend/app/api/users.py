@@ -1,17 +1,9 @@
 from fastapi import APIRouter,Depends
-import cv2 
-import io
-import os 
 from fastapi import UploadFile
 # from crud import InsertUser,ge,InsertCategory,InsertRecord,ReadRecord,ReadCategory,ReadImage
 # from crud import UpdateRecord
 import sys 
-from utils.resize_image import resize_image
-from utils.make_mask import make_mask
-from utils.convert_rgb_to_rgba import convert_to_rgba_image
-from utils.upload_illustration import upload_illustration
-from services.gpt_image_client import call_gpt_with_image
-from services.user_service import register_user,fetch_record_with_image,create_record
+from services.user_service import upload_image,register_user,fetch_record_with_image,create_record
 from db import get_session
 from pydantic import BaseModel 
 from sqlalchemy.orm import Session
@@ -26,7 +18,6 @@ class RecordInfo(BaseModel):
     category_id: int
     record_name: str
 
-
 router = APIRouter() 
 
 @router.get("/users/{user_id}")
@@ -39,31 +30,13 @@ async def read_user(user_id: int, session: Session=Depends(get_session)):
     return image_obj
 
 @router.post("/users/{user_id}/")
-async def get_illustration(ufile: UploadFile):
-    bf = await ufile.read()
-    if not bf:
+async def get_illustration(ufile: UploadFile,session: Session=Depends(get_session)):
+    file = await ufile.read()
+    if not file:
         print("file is empty",flush=True)
-    os.makedirs("./assets/images",exist_ok = True)
-    path = f'./assets/images/{ufile.filename}'
-    with open(path,'wb') as buffer:
-        buffer.write(bf)
-
-    image_path = path 
-    resized_image_path = resize_image(image_path)
-#    converted_image_path = convert_to_rgba_image(resized_image_path,mask=False)
-    custom_output_path = "assets/images/mask.png" 
-    #RGB 形式のMask 画像のパス
-    mask_raw_output_path = make_mask(image_path=resized_image_path,output_path=custom_output_path)
-    #RGBA 形式変換後の画像のパス
-    converted_mask_path=convert_to_rgba_image(mask_raw_output_path,mask=True)
-    #call_gpt_with_image(converted_image_path,converted_mask_path)
-    # 個のレスポンスを待ってから 下の処理に進んでいるか確認する必要がありそう
-    image_path = "assets/images/illust.png"
-    im = cv2.imread(image_path) 
-    byte_image,buf = cv2.imencode(".png",im) 
-
-    uploaded_image_path = upload_illustration(image_path)
-
+    # bf をビジネスロジックレイヤーに対して渡す
+   
+    uploaded_image_path = upload_image(uploaded_file=file)
     print("image->",uploaded_image_path)
     return {"image_url": uploaded_image_path}
 

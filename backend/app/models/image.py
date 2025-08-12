@@ -14,12 +14,12 @@ class Image(Base):
 
     record = relationship("Record",back_populates="images")
 
-class ImageCreate(BaseModel):
+class ImageBase(BaseModel):
     record_id: int 
     image_url: str
     image_description: Optional[str] = None
 
-class ImageResponse(ImageCreate):
+class ImageResponse(ImageBase):
     image_id: int 
     record_id: int 
 
