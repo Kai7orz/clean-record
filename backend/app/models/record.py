@@ -27,6 +27,13 @@ class RecordBase(BaseModel):
     user_id: int 
     category_id: int 
 
+class RecordImageBase(BaseModel):
+    user_id: int 
+    category_id: int 
+    record_name: str 
+    image_url: str 
+    image_description: str 
+
 class RecordOutput(RecordBase):
     record_id: int 
     recorded_at: DateTime

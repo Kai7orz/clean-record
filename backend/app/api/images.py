@@ -14,3 +14,4 @@ image_router = APIRouter()
 @image_router.post("/images")
 async def create_new_image(image_info:ImageInfo,session:Session=Depends(get_session)):
     insert_new_image(session=session,record_id=image_info.record_id,image_url=image_info.image_url,image_description=image_info.image_description)
+

@@ -1,8 +1,8 @@
 import os 
 import cv2 
-from models.record import RecordBase 
+from models.record import RecordBase,RecordImageBase
 from models.image import ImageBase
-from crud import get_record_with_image,insert_user,insert_image,insert_record
+from crud import get_record_with_image,insert_user,insert_image,insert_record,insert_record_with_image
 from sqlalchemy.orm import Session
 from fastapi import UploadFile
 from utils.resize_image import resize_image
@@ -28,6 +28,17 @@ def create_record(session: Session,user_id:int,category_id:int,record_name:str):
         category_id = category_id ,
     )
     insert_record(session=session,record_create=record_create)
+
+def create_record_with_image(session: Session,user_id:int,category_id:int,record_name:str,image_url:str,image_description:str=None):
+    record_with_image_create = RecordImageBase(
+        user_id=user_id, 
+        category_id=category_id,
+        record_name=record_name,
+        image_url=image_url,
+        image_description=image_description
+    )
+    insert_record_with_image(session=session,record_with_image_crerate=record_with_image_create)
+
 
 def fetch_record_with_image(session: Session,record_id: int) -> dict:
     image_url = "https://fjibxkzzwqkhzotywbdh.supabase.co/storage/v1/object/public/clean-up-bucket//illust.png"

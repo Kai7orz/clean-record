@@ -1,8 +1,9 @@
 from model import create_table 
 from models.user import User,UserCreate
-from models.record import Record,RecordBase,RecordOutput
+from models.record import Record,RecordBase,RecordImageBase
 from models.image import Image,ImageCreate 
 from models.category import Category,CategoryBase
+from models.image import ImageBase,Image
 from models.relations import CategoryRecord
 from sqlalchemy.orm import Session
 
@@ -145,3 +146,22 @@ def insert_category(session: Session, category_base:CategoryBase):
     session.commit()
 
 # 中間テーブルは。レコード挿入時に介入・カテゴリーインサートには関与しないという理解
+
+def insert_image(session: Session,image_base:ImageBase):
+    image = Image(
+        record_id = image_base.record_id,
+        image_url = image_base.image_url,
+        image_description = image_base.image_description
+    )
+    session.add(image)
+    session.commit()
+
+def insert_record_with_image(session: Session,record_with_image_base:RecordImageBase):
+    record_with_image = Record(
+        record_name = record_with_image_base.record_name,
+        user_id =  record_with_image_base.user_id,
+    )
+    # ここがエラーになるかもしれない
+    record_with_image.images = Image(record_id=record_with_image.record_id,image_url=record_with_image_base.image_url,image_description=record_with_image_base.image_description)        
+    session.add(record_with_image)
+    session.commit()
