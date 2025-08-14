@@ -41,10 +41,8 @@ def create_record_with_image(session: Session,user_id:int,category_id:int,record
     insert_record_with_image(session=session,record_with_image_base=record_with_image_create)
 
 
-def fetch_record_with_image(session: Session,record_id: int) -> dict:
-    image_url = "https://fjibxkzzwqkhzotywbdh.supabase.co/storage/v1/object/public/clean-up-bucket//illust.png"
-    image_description = "test description of image"
-    image_obj = get_record_with_image(session,record_id)
+def fetch_record_with_image(session: Session,user_id: int) -> dict:
+    image_obj = get_record_with_image(session,user_id)
     return image_obj
 
 def upload_image(uploaded_file): 

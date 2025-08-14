@@ -30,10 +30,8 @@ router = APIRouter()
 
 @router.get("/users/{user_id}")
 async def read_user(user_id: int, session: Session=Depends(get_session)):
-    print("User :",user_id)
-    print("record 1 :")
-    record_id = 2
-    image_obj = fetch_record_with_image(session,record_id=record_id)
+    # パスパラメータとして読み込む
+    image_obj = fetch_record_with_image(session,user_id=user_id)
     print("Image Object: ",image_obj)
     return image_obj
 

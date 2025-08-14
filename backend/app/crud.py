@@ -6,6 +6,8 @@ from models.category import Category,CategoryBase
 from models.image import ImageBase,Image
 from models.relations import CategoryRecord
 from typing import List
+from sqlalchemy import select
+from sqlalchemy.orm import selectinload
 from sqlalchemy.orm import Session
 
 # テーブル構築
@@ -111,10 +113,16 @@ def insert_image(session: Session,record_id: int,image_url:str,image_description
 #     session.commit()
 #     print("✅レコード削除")
 
-def get_record_with_image(session: Session, record_id: int):
+def get_record_with_image(session: Session, user_id: int):
     # ユーザに対応したimage を取得する
     # クエリ発行
-    images = session.query(Image).filter(Image.record_id == record_id).all()
+    stmt = (
+        select(Image)
+        .join(Image.record)
+        .where(Record.user_id == user_id)
+        .order_by(Image.image_id.desc())
+    )
+    images = session.execute(stmt).scalars().all()
     return images
 
 # category に紐づいたレコードを定義する
