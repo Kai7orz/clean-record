@@ -1,5 +1,6 @@
 <script setup lang="ts">
-    // 今はuserId を文字列で扱うが，int に変更する
+    // レコード設定にimage オブジェクトを追加する
+    // image_url + image_description の追加をすればよさそう
     const baseUrl = "/api/records/record"
     const url = ref("")
 
@@ -7,6 +8,8 @@
         userId: "",
         categoryId: "",
         recordName: "",
+        imageUrl:"",
+        imageDescription:"",
     })
 
     watch(postData,()=>{
@@ -30,6 +33,12 @@
     </v-text-field>
     <v-text-field v-model="postData.recordName">
         record name （自由）
+    </v-text-field>
+    <v-text-field v-model="postData.imageUrl">
+        image_url: の指定
+    </v-text-field>
+    <v-text-field v-model="postData.imageDescription">
+        image_description: の指定
     </v-text-field>
     <v-btn @click="onClick">
         情報送信

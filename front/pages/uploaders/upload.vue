@@ -1,9 +1,18 @@
 <script setup lang="ts">
 
+    const url = "/api/records/record"
     const fileInput = ref<HTMLInputElement | null >(null)
     const responsedUrl = ref<string>("")
     const previewUrl = ref<string>("")
 
+    const postData = reactive({
+        userId: "",
+        categoryId: "",
+        recordName: "",
+        imageUrl: "",
+        imageDescription: "",
+    })
+    
     const getIllustration = async (event: Event) => {
         event.preventDefault();
         const file = fileInput.value?.files?.[0];
@@ -12,8 +21,11 @@
 
         if(responsedImageUrl["image_url"]){
             responsedUrl.value = responsedImageUrl["image_url"]
+            postData.imageUrl = responsedUrl.value
+            console.log("イラストURL :",postData.imageUrl)
         }
     }
+
     const getPreview = async (event: Event) => {
         event.preventDefault();
         const file = fileInput.value?.files?.[0];
@@ -21,6 +33,16 @@
         previewUrl.value = URL.createObjectURL(file);
     }
 
+    const createNewRecord = () => {
+        if(postData.imageUrl == ""){
+            console.log("Image is Empty")
+            return 
+        }
+        useFetch(url,{
+            method: 'POST',
+            body: postData,
+        })
+    }
 </script>
 
 <template>
@@ -28,9 +50,33 @@
             <v-file-input 
             @change="getPreview" class="max-w-xs" label="File input" ref="fileInput"></v-file-input>
             <v-btn @click="getIllustration" prepend-icon="$vuetify" append-icon="$vuetify" variant="outlined">
-                Button
+                イラスト生成
+            </v-btn>
+            <v-btn @click="createNewRecord">
+                画像の保存
             </v-btn>
     </div>
+    <v-sheet>
+        <v-text-field bg-color="grey" v-model="postData.userId">
+            user id の設定
+        </v-text-field>
+        <v-text-field bg-color="grey" v-model="postData.categoryId">
+            category id の設定
+        </v-text-field>
+        <v-text-field bg-color="grey" v-model="postData.recordName">
+            record name の設定
+        </v-text-field>
+        <v-text-field>
+            image　の説明
+        </v-text-field>
+    </v-sheet>
+
+    <v-sheet>
+        <v-text-field v-model="postData.imageUrl">
+            イラストの手動入力
+        </v-text-field>
+    </v-sheet>
+
     <!-- プレビュー画像 と レスポンスが像が欲しい -->
     <div class="flex justify-center">
         <!-- プレビュー画像-->

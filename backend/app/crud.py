@@ -1,12 +1,12 @@
 from model import create_table 
 from models.user import User,UserCreate
 from models.record import Record,RecordBase,RecordImageBase
-from models.image import Image,ImageCreate 
+from models.image import Image,ImageBase
 from models.category import Category,CategoryBase
 from models.image import ImageBase,Image
 from models.relations import CategoryRecord
+from typing import List
 from sqlalchemy.orm import Session
-
 
 # テーブル構築
 create_table() 
@@ -162,6 +162,11 @@ def insert_record_with_image(session: Session,record_with_image_base:RecordImage
         user_id =  record_with_image_base.user_id,
     )
     # ここがエラーになるかもしれない
-    record_with_image.images = Image(record_id=record_with_image.record_id,image_url=record_with_image_base.image_url,image_description=record_with_image_base.image_description)        
+    # この　レコードとimage に関連があるのに2回DB アクセスしてからインサートするのなんか微妙な気がする
     session.add(record_with_image)
+    session.commit()
+
+    image = Image(record_id=record_with_image.record_id,image_url=record_with_image_base.image_url,image_description=record_with_image_base.image_description)
+
+    session.add(image)
     session.commit()

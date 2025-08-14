@@ -39,12 +39,7 @@ async def read_user(user_id: int, session: Session=Depends(get_session)):
 
 @router.post("/users/{user_id}/")
 async def get_illustration(ufile: UploadFile,session: Session=Depends(get_session)):
-    file = await ufile.read()
-    if not file:
-        print("file is empty",flush=True)
-    # bf をビジネスロジックレイヤーに対して渡す
-   
-    uploaded_image_path = upload_image(uploaded_file=file)
+    uploaded_image_path = upload_image(uploaded_file=ufile)
     print("image->",uploaded_image_path)
     return {"image_url": uploaded_image_path}
 

@@ -1,5 +1,6 @@
 import os 
 import cv2 
+import shutil
 from models.record import RecordBase,RecordImageBase
 from models.image import ImageBase
 from crud import get_record_with_image,insert_user,insert_image,insert_record,insert_record_with_image
@@ -37,7 +38,7 @@ def create_record_with_image(session: Session,user_id:int,category_id:int,record
         image_url=image_url,
         image_description=image_description
     )
-    insert_record_with_image(session=session,record_with_image_crerate=record_with_image_create)
+    insert_record_with_image(session=session,record_with_image_base=record_with_image_create)
 
 
 def fetch_record_with_image(session: Session,record_id: int) -> dict:
@@ -47,10 +48,13 @@ def fetch_record_with_image(session: Session,record_id: int) -> dict:
     return image_obj
 
 def upload_image(uploaded_file): 
+    bf = uploaded_file.read()
+    if not bf:
+        print("file is empty",flush=True)
     os.makedirs("./assets/images",exist_ok = True)
     path = f'./assets/images/{uploaded_file.filename}'
     with open(path,'wb') as buffer:
-        buffer.write(uploaded_file)
+        shutil.copyfileobj(uploaded_file.file, buffer)
 
     image_path = path 
     resized_image_path = resize_image(image_path)
