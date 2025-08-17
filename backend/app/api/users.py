@@ -5,13 +5,9 @@ from fastapi import UploadFile
 import sys 
 from services.user_service import create_record_with_image,upload_image,register_user,fetch_record_with_image,create_record
 from db import get_session
+from schemas.user import UserRegisterInfo 
 from pydantic import BaseModel 
 from sqlalchemy.orm import Session
-
-class RegisterInfo(BaseModel):
-    user_name: str 
-    email: str 
-    age: str
 
 class RecordInfo(BaseModel):
     user_id: int 
@@ -41,9 +37,9 @@ async def get_illustration(ufile: UploadFile,session: Session=Depends(get_sessio
     print("image->",uploaded_image_path)
     return {"image_url": uploaded_image_path}
 
+# test 実装済み
 @router.post("/users/register")
-async def register_new_user(register_info:RegisterInfo,session: Session=Depends(get_session)):
-    print("登録情報の読み取り... name:",register_info.user_name," email:",register_info.email," age:",register_info.age)
+async def register_new_user(register_info:UserRegisterInfo,session: Session=Depends(get_session)):
     register_user(session=session,user_name=register_info.user_name,email=register_info.email,age=register_info.age)
 
 @router.post("/users/{user_id}/records")

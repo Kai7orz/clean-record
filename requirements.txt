@@ -8,3 +8,5 @@ python-dotenv
 supabase
 mysqlclient 
 sqlalchemy
+pytest
+sqlalchemy_utils
