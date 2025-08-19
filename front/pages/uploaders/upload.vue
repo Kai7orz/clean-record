@@ -46,7 +46,7 @@
 </script>
 
 <template>
-    <v-sheet class="flex-row justify-center m-10 p-2">
+    <v-container class="flex flex-row justify-center m-10 p-2">
             <v-file-input 
               class="max-w-xs m-5 p-3" 
               label="Select Image to Illustrate" 
@@ -58,6 +58,8 @@
               v-model="postData.imageUrl"
               label="イラストURL手動入力">
             </v-text-field>
+    </v-container>
+    <v-sheet class="flex m-10 text-center">
             <v-btn  
               class="m-5"
               prepend-icon="$vuetify" 
@@ -76,7 +78,7 @@
             </v-btn>
     </v-sheet>
 
-    <v-sheet class="flex justify-center">
+    <v-container class="flex flex-row justify-center">
         <!-- プレビュー画像-->
         <div v-if='previewUrl!=""' class=" w-1/3 flex flex-col flex-wrap md:flex-row md:justify-center m-10">
             <UiImageCard :image_url=previewUrl>
@@ -92,7 +94,7 @@
                 </template>
             </UiImageCard>
         </div>
-    </v-sheet>
+    </v-container>
 
     <v-sheet class="flex-row justify-center m-10 p-2">
         <v-text-field 
