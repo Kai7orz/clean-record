@@ -46,54 +46,74 @@
 </script>
 
 <template>
-    <div class="flex-row justify-center m-10">
+    <v-sheet class="flex-row justify-center m-10 p-2">
             <v-file-input 
-            @change="getPreview" class="max-w-xs" label="File input" ref="fileInput"></v-file-input>
-            <v-btn @click="getIllustration" prepend-icon="$vuetify" append-icon="$vuetify" variant="outlined">
+              class="max-w-xs m-5 p-3" 
+              label="Select Image to Illustrate" 
+              ref="fileInput"
+              @change="getPreview" >
+            </v-file-input>
+            <v-text-field
+              class="w-1/3 m-5"
+              v-model="postData.imageUrl"
+              label="イラストURL手動入力">
+            </v-text-field>
+            <v-btn  
+              class="m-5"
+              prepend-icon="$vuetify" 
+              append-icon="$vuetify" 
+              variant="outlined"
+              @click="getIllustration" >
                 イラスト生成
             </v-btn>
-            <v-btn @click="createNewRecord">
+            <v-btn 
+              class="m-5" 
+              prepend-icon="$vuetify" 
+              append-icon="$vuetify" 
+              variant="outlined"
+              @click="createNewRecord" >
                 画像の保存
             </v-btn>
-    </div>
-    <v-sheet>
-        <v-text-field bg-color="grey" v-model="postData.userId">
-            user id の設定
-        </v-text-field>
-        <v-text-field bg-color="grey" v-model="postData.categoryId">
-            category id の設定
-        </v-text-field>
-        <v-text-field bg-color="grey" v-model="postData.recordName">
-            record name の設定
-        </v-text-field>
-        <v-text-field>
-            image　の説明
-        </v-text-field>
     </v-sheet>
 
-    <v-sheet>
-        <v-text-field v-model="postData.imageUrl">
-            イラストの手動入力
-        </v-text-field>
-    </v-sheet>
-
-    <!-- プレビュー画像 と レスポンスが像が欲しい -->
-    <div class="flex justify-center">
+    <v-sheet class="flex justify-center">
         <!-- プレビュー画像-->
-        <div v-if='previewUrl!=""' class=" w-1/3 flex flex-col flex-wrap md:flex-row md:justify-center m-10 ">
+        <div v-if='previewUrl!=""' class=" w-1/3 flex flex-col flex-wrap md:flex-row md:justify-center m-10">
             <UiImageCard :image_url=previewUrl>
                 <template #title>
-
                 </template>
             </UiImageCard>
         </div>
-    <!-- レスポンス -->
-        <div v-if='responsedUrl!="" ' class="w-1/3 flex flex-col flex-wrap md:flex-row md:justify-center m-10 ">
+        <!-- レスポンス -->
+        <div v-if='responsedUrl!="" ' class="w-1/3 flex flex-col flex-wrap md:flex-row md:justify-center m-10">
             <UiImageCard :image_url=responsedUrl>
                 <template #title>
                     <h1> カード名 </h1>
                 </template>
             </UiImageCard>
         </div>
-    </div>  
+    </v-sheet>
+
+    <v-sheet class="flex-row justify-center m-10 p-2">
+        <v-text-field 
+          class="w-1/3" 
+          v-model="postData.userId"
+          label="user id の設定">
+        </v-text-field>
+        <v-text-field 
+          class="w-1/3" 
+          v-model="postData.categoryId"
+          label="category id の設定">
+        </v-text-field>
+        <v-text-field 
+          class="w-1/3" 
+          v-model="postData.recordName"
+          label="record name の設定">
+        </v-text-field>
+        <v-text-field 
+          class="w-1/3"
+          label="image の説明">
+        </v-text-field>
+    </v-sheet>
+
 </template>

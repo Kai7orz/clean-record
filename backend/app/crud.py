@@ -1,4 +1,3 @@
-from model import create_table 
 from models.user import User,UserCreate
 from models.record import Record,RecordBase,RecordImageBase
 from models.image import Image,ImageBase
@@ -9,9 +8,6 @@ from typing import List
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 from sqlalchemy.orm import Session
-
-# テーブル構築
-create_table() 
 
 # # Create 処理群
 def insert_user(session:Session,user_name:str,email:str,age:int):
@@ -57,19 +53,6 @@ def insert_user(session:Session,user_name:str,email:str,age:int):
 
 #     session.add(db_test_record) 
 #     session.commit() 
-
-
-    
-def insert_image(session: Session,record_id: int,image_url:str,image_description:str):
-    images = session.query(Image).all() 
-
-    test_image = ImageCreate(record_id=record_id,image_url=image_url,image_description=image_description)
-    db_test_image = Image(**test_image.dict())
-
-    session.add(db_test_image)
-    session.commit()
-    
-    images = session.query(Image).all() 
 
 # # Read 処理群
 

@@ -45,17 +45,23 @@ def fetch_record_with_image(session: Session,user_id: int) -> dict:
     image_obj = get_record_with_image(session,user_id)
     return image_obj
 
-def upload_image(uploaded_file): 
-    bf = uploaded_file.read()
+async def upload_image(uploaded_file):
+    bf = await uploaded_file.read()
     if not bf:
         print("file is empty",flush=True)
     os.makedirs("./assets/images",exist_ok = True)
-    path = f'./assets/images/{uploaded_file.filename}'
-    with open(path,'wb') as buffer:
-        shutil.copyfileobj(uploaded_file.file, buffer)
+    image_path = f'{os.getcwd()}/assets/images/{uploaded_file.filename}'
 
-    image_path = path 
-    resized_image_path = resize_image(image_path)
+    if os.path.exists(image_path):
+        print("path is found✅ current:",image_path)
+    else:
+        print("path is not found")
+
+    with open(image_path,'wb') as buffer:
+        buffer.write(bf)
+    # resize_image 後に None が返ってきていることが問題
+    resized_image_path = await resize_image(image_path)
+    print("resize:",resized_image_path)
     converted_image_path = convert_to_rgba_image(resized_image_path,mask=False)
     custom_output_path = "assets/images/mask.png" 
     #RGB 形式のMask 画像のパス

@@ -21,13 +21,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Nuxt が起動時にDB 設定のために呼び出す
-@app.get("/") 
-def read_root():
-    #テーブル構築
+@app.on_event("startup")
+def on_startup():
     create_table()
-    completed_message = {"message":"DB setting finished"}
-    return completed_message
 
 app.include_router(api.users.router)
 app.include_router(api.categories.category_router)

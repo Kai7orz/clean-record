@@ -33,10 +33,9 @@ async def read_user(user_id: int, session: Session=Depends(get_session)):
 
 @router.post("/users/{user_id}/")
 async def get_illustration(ufile: UploadFile,session: Session=Depends(get_session)):
-    uploaded_image_path = upload_image(uploaded_file=ufile)
+    uploaded_image_path = await upload_image(uploaded_file=ufile)
     print("image->",uploaded_image_path)
     return {"image_url": uploaded_image_path}
-
 # test 実装済み
 @router.post("/users/register")
 async def register_new_user(register_info:UserRegisterInfo,session: Session=Depends(get_session)):
