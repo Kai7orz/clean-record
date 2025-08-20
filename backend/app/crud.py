@@ -1,3 +1,4 @@
+from pydantic import ValidationError
 from fastapi import FastAPI, HTTPException
 from models.user import User,UserCreate
 from models.record import Record,RecordBase,RecordImageBase
@@ -10,20 +11,37 @@ from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError,SQLAlchemyError
 
 
 
 # # Create 処理群
 def insert_user(session:Session,user_name:str,email:str,age:int):
-    # User テーブルへのInsert 処理
-    users = session.query(User).all()
-    # Pydantic オブジェクトでuser 生成
-    test_user = UserCreate(user_name=user_name,email=email,age=age)
-    # DB に適用するためにSQLAlchemy オブジェクトを Pydanticオブジェクトを基に生成
-    db_test_user = User(**test_user.dict())
-    # DB へ追加するための処理
-    session.add(db_test_user) 
-    session.commit()
+    try:
+        # Pydantic オブジェクトでuser 生成
+        new_user = UserCreate(user_name=user_name,email=email,age=age)
+        # DB に適用するためにSQLAlchemy オブジェクトを Pydanticオブジェクトを基に生成
+        db_new_user = User(**new_user.dict())
+        # DB へ追加するための処理
+    except ValidationError as ve:
+        raise HTTPException(status_code=422,detail=ve.errors())
+    try:
+        session.add(db_new_user) 
+        session.commit()
+    
+    except IntegrityError as e:
+        session.rollback()
+        raise HTTPException(
+            status_code = 409,
+            detail={"code":"user insert error","message":"不正なユーザーのinsert error"}
+        )
+    except SQLAlchemyError as e:
+        session.rollback()
+        raise HTTPException(
+            status_code=500,
+            detail={"code":"db_error","message":"データベースエラーが発生"}
+        )
+
 
 #     users = session.query(Users).all()
 #     print("Users After Inserting:",users)
@@ -154,11 +172,18 @@ def insert_record(session: Session,record_create: RecordBase):
         ) 
     
 def insert_category(session: Session, category_base:CategoryBase):
-    category = Category(
-        category_name = category_base.category_name
-    )
-    session.add(category)
-    session.commit()
+    try:
+        category = Category(
+            category_name = category_base.category_name
+        )
+        session.add(category)
+        session.commit()
+    
+    except IntegrityError as e:
+        raise HTTPException(
+            status_code = 400,
+            detail={"code":"Bad_request","message":"不正な入力"}
+        )
 
 # 中間テーブルは。レコード挿入時に介入・カテゴリーインサートには関与しないという理解
 
@@ -184,10 +209,18 @@ def insert_record_with_image(session: Session,record_with_image_base:RecordImage
         record_name = record_with_image_base.record_name,
         user_id =  record_with_image_base.user_id,
     )
+    try:
+        session.add(record_with_image)
+        session.flush()
+        image = Image(record_id=record_with_image.record_id,image_url=record_with_image_base.image_url,image_description=record_with_image_base.image_description)
 
-    session.add(record_with_image)
-    session.flush()
-    image = Image(record_id=record_with_image.record_id,image_url=record_with_image_base.image_url,image_description=record_with_image_base.image_description)
-
-    session.add(image)
-    session.commit()
+        session.add(image)
+        session.commit()
+    except:
+        session.rollback() 
+        raise HTTPException(
+            status_code = 404,
+            detail={"code":"DB insert error","message":"DB にデータ挿入時エラーが発生しました"}
+        )
+    finally:
+        session.close()

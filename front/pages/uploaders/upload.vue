@@ -33,15 +33,16 @@
         previewUrl.value = URL.createObjectURL(file);
     }
 
-    const createNewRecord = () => {
+    const createNewRecord = async () => {
         if(postData.imageUrl == ""){
             console.log("Image is Empty")
             return 
         }
-        useFetch(url,{
+        const res = await useFetch(url,{
             method: 'POST',
             body: postData,
         })
+
     }
 </script>
 

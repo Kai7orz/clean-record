@@ -10,10 +10,8 @@
 </script>
 
 <template>
-    <v-sheet>
-        <v-btn @click="onClick">
-            アップロード画面へ遷移する
+        <v-btn class="m-10 gap-5" @click="onClick">
+            アップロード画面へ
         </v-btn>
         <CardList :user-id="userId[0]"/>
-    </v-sheet>
 </template>

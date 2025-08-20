@@ -9,12 +9,6 @@ db_name = "sample_db"
 user = "mysqluser"
 password = "mysqlpass" 
 port = "3306"
-# DATABASE = 'mysql://%s:%s@%s/%s?charset=utf8' % (
-#     user,
-#     password,
-#     host,
-#     db_name,
-# )
 
 DATABASE =  "mysql+mysqldb://{}:{}@{}:{}/{}".format(
             user,

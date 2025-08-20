@@ -27,6 +27,5 @@ export default defineEventHandler( async (event) => {
         body: JSON.stringify(postData)
     })
 
-    console.log("image insert error　時にresposne がどのように変えるか見てみる",res)
-
+    return res
 })
