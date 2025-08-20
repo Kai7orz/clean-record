@@ -1,3 +1,4 @@
+from fastapi import FastAPI, HTTPException
 from models.user import User,UserCreate
 from models.record import Record,RecordBase,RecordImageBase
 from models.image import Image,ImageBase
@@ -8,6 +9,9 @@ from typing import List
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
+
+
 
 # # Create 処理群
 def insert_user(session:Session,user_name:str,email:str,age:int):
@@ -108,27 +112,47 @@ def get_record_with_image(session: Session, user_id: int):
     images = session.execute(stmt).scalars().all()
     return images
 
-# category に紐づいたレコードを定義する
+# user・category に紐づいたレコードを定義する
 def insert_record(session: Session,record_create: RecordBase):
     #insert 時に指定するpydantic の方はinsert 専用のものを指定するのか
     # record 作成して，category.append を入れた後にadd commit 
     record = Record(
         record_name = record_create.record_name
     )
-    print("Record_create:",record_create)
     user = session.query(User).filter(User.user_id == record_create.user_id).first()
-    print("user found ->",user)
     if(user==None):
-        print("user is not found")
+        raise HTTPException(
+            status_code = 404,
+            detail={"code":"user not found","message":"指定したユーザーが見つかりませんでした"}
+        )
+
     category = session.query(Category).filter(Category.category_id == record_create.category_id ).first()
-    record.categories.append(category)
-    record.user=user
+    if(category == None):
+        raise HTTPException(
+            status_code = 404,
+            detail={"code":"category not found","message":"指定したカテゴリーが見つかりませんでした"}
+        )
+    try:
+        record.categories.append(category)
+        record.user=user
 
-    print("Insert Record -> user:",user ," category:",category," record:",record)
+        session.add(record) 
+        session.commit()
 
-    session.add(record) 
-    session.commit()
+    except IntegrityError as e:
+        session.rollback()
+        raise HTTPException(
+            status_code = 404,
+            detail={"code": "DB insert error","message":"DB でエラー"}
+    )
 
+    except Exception:
+        session.rollback() 
+        raise HTTPException(
+            status_code = 404,
+            detail={"code":"INTERNAL ERROR","message":"サーバー内部でのエラー"}
+        ) 
+    
 def insert_category(session: Session, category_base:CategoryBase):
     category = Category(
         category_name = category_base.category_name
@@ -148,15 +172,21 @@ def insert_image(session: Session,image_base:ImageBase):
     session.commit()
 
 def insert_record_with_image(session: Session,record_with_image_base:RecordImageBase):
+
+    user = session.get(User,record_with_image_base.user_id)
+    if user is None:    
+        raise HTTPException(
+            status_code = 404,
+            detail={"code":"user not found","message":"指定したユーザーが見つかりませんでした"}
+        )
+    
     record_with_image = Record(
         record_name = record_with_image_base.record_name,
         user_id =  record_with_image_base.user_id,
     )
-    # ここがエラーになるかもしれない
-    # この　レコードとimage に関連があるのに2回DB アクセスしてからインサートするのなんか微妙な気がする
-    session.add(record_with_image)
-    session.commit()
 
+    session.add(record_with_image)
+    session.flush()
     image = Image(record_id=record_with_image.record_id,image_url=record_with_image_base.image_url,image_description=record_with_image_base.image_description)
 
     session.add(image)

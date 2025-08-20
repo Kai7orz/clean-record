@@ -19,7 +19,6 @@ export default defineEventHandler( async (event) => {
         image_description: imageDescription,
     }
 
-    console.log("postData->",postData)
     const res = await fetch(url,{
         method: 'POST',
         headers: {
@@ -27,4 +26,7 @@ export default defineEventHandler( async (event) => {
         },
         body: JSON.stringify(postData)
     })
+
+    console.log("image insert error　時にresposne がどのように変えるか見てみる",res)
+
 })

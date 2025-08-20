@@ -114,6 +114,7 @@
         </v-text-field>
         <v-text-field 
           class="w-1/3"
+          v-model="postData.imageDescription"
           label="image の説明">
         </v-text-field>
     </v-sheet>
