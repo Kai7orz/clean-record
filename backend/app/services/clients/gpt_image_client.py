@@ -16,7 +16,7 @@ def call_gpt_with_image(resized_image_path,mask_image_path):
         # base64_image = image_to_base64(image_path)
         prompt =   "画像をイラスト化して"
         model = "gpt-image-1"
-        output_path = Path(__file__).resolve().parent.parent / "assets" / "images" / "illust.png"
+        output_path = Path(__file__).resolve().parent.parent.parent / "assets" / "images" / "illust.png"
 
         with open(resized_image_path,"rb") as image_file,open(mask_image_path,"rb") as mask_file:
             result = client.images.edit(
