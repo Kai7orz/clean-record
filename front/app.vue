@@ -1,21 +1,21 @@
 <template>
   <v-app theme="dark">
-    <ui-header class="p-3" />
-    <div>
-      <div class="polygon-bg">
-        <div class="polygon"></div>
-        <div class="polygon"></div>
-        <div class="polygon"></div>
+    <NuxtLayout>
+      <div>
+        <div class="polygon-bg">
+          <div class="polygon"></div>
+          <div class="polygon"></div>
+          <div class="polygon"></div>
+        </div>
+        <v-main class="my-10">
+          <NuxtPage />
+        </v-main>
       </div>
-      <v-main class="my-10">
-        <NuxtPage />
-      </v-main>
-    </div>
+    </NuxtLayout>
   </v-app>
 </template>
 
 <script setup lang="ts">
-
 const alert = (msg: string) => {
   window.alert(msg);
 };

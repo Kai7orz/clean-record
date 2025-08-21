@@ -24,8 +24,6 @@ const clickUpload = () => {
     router.push("/uploaders/upload")
 }
 
-
-
 </script>
 
 <template>

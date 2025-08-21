@@ -1,4 +1,7 @@
 <script setup lang="ts">
+    definePageMeta({
+        layout: 'navigator'
+    })
     // レコード設定にimage オブジェクトを追加する
     // image_url + image_description の追加をすればよさそう
     const baseUrl = "/api/records/record"
