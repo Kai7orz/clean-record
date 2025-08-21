@@ -1,17 +1,17 @@
 <script setup lang="ts">
     import CardList from "@/containers/CardList.vue";
 
+    const route = useRoute()
     const router = useRouter()
     const onClick = ()=>{
         router.push("/uploaders/upload")
     }
+    const userId = route.params.user_id
 </script>
 
 <template>
-    <v-sheet>
-        <v-btn @click="onClick">
-            アップロード画面へ遷移する
+        <v-btn class="m-10 gap-5" @click="onClick">
+            アップロード画面へ
         </v-btn>
-        <CardList />
-    </v-sheet>
+        <CardList :user-id="userId[0]"/>
 </template>

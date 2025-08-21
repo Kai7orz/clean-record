@@ -1,9 +1,10 @@
 <script setup lang="ts">
     import CardList from "@/containers/CardList.vue"
+    const testuser_id = ref("1")
 </script>
 
 <template>
-    <CardList />
+    <CardList :userId="testuser_id"/>
 </template>
 
 <style>

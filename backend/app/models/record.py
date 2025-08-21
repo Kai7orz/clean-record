@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship
 from pydantic import BaseModel 
 from sqlalchemy.sql import func
 from db import Base 
-from typing  import List 
+from typing import List 
 from models.category import Category 
 from models.user import User
 from models.image import Image
@@ -27,12 +27,10 @@ class RecordBase(BaseModel):
     user_id: int 
     category_id: int 
 
-class RecordOutput(RecordBase):
-    record_id: int 
-    recorded_at: DateTime
-    images: List[Image]
-    categories: List[Category]
-    
-    class Config:
-        orm_mode = True
-        arbitrary_types_allowed = True 
+class RecordImageBase(BaseModel):
+    user_id: int 
+    category_id: int 
+    record_name: str 
+    image_url: str 
+    image_description: str 
+

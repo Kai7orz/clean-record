@@ -7,19 +7,19 @@ from db import Base
 # Images テーブル
 class Image(Base):
     __tablename__ = 'images'
-    record_id = Column(Integer,ForeignKey('records.record_id',ondelete="CASCADE"))
+    record_id = Column(Integer,ForeignKey('records.record_id',ondelete="CASCADE"),nullable=False)
     image_id = Column(Integer,primary_key=True,autoincrement=True)
     image_url = Column(String(2048),nullable=False)
     image_description = Column(String(1024),nullable=True)
 
     record = relationship("Record",back_populates="images")
 
-class ImageCreate(BaseModel):
+class ImageBase(BaseModel):
     record_id: int 
     image_url: str
     image_description: Optional[str] = None
 
-class ImageResponse(ImageCreate):
+class ImageResponse(ImageBase):
     image_id: int 
     record_id: int 
 
