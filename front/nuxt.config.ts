@@ -10,7 +10,7 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "@pinia/nuxt",
     "nuxt-swiper",
-
+    "@nuxt/eslint",
   ],
 
   // Vuetify 用に必要な Vite 設定

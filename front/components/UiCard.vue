@@ -15,8 +15,8 @@
 </script>
 
 <template>
-    <v-sheet @click="()=> clicked(props.record_id)" class="d-inline-flex flex-col align-center justify-center gap-1 border-black mt-4 min-w-[300px] rounded-lg bg-grey">
-        <img class="w-[300px] rounded-lg mx-10 mt-10":src="props.image_url"/>
+    <v-sheet class="d-inline-flex flex-col align-center justify-center gap-1 border-black mt-4 min-w-[300px] rounded-lg bg-grey" @click="()=> clicked(props.record_id)">
+        <img class="w-[300px] rounded-lg mx-10 mt-10" :src="props.image_url">
         <p>画像の詳細 : {{ props.image_description }}</p>
     </v-sheet>
 </template>

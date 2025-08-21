@@ -37,16 +37,16 @@ const clickUpload = () => {
     <v-navigation-drawer 
       v-model="drawer">
       <v-list>
-        <v-list-item @click="clickMenu" :border="borderColor">
+        <v-list-item :border="borderColor" @click="clickMenu">
           <v-list-item-title>Menu</v-list-item-title>
         </v-list-item>
-        <v-list-item @click="clickRegisterUser" :border="borderColor">
+        <v-list-item :border="borderColor" @click="clickRegisterUser">
           <v-list-item-title>Register User</v-list-item-title>
         </v-list-item>
-        <v-list-item @click="clickSelectUser" :border="borderColor">
+        <v-list-item :border="borderColor" @click="clickSelectUser">
             <v-list-item-title>Select User</v-list-item-title>
         </v-list-item>
-        <v-list-item @click="clickUpload" :border="borderColor">
+        <v-list-item :border="borderColor" @click="clickUpload">
           <v-list-item-title>Upload</v-list-item-title>
         </v-list-item>
       </v-list>      

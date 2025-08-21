@@ -39,7 +39,7 @@ async def get_illustration(ufile: UploadFile,session: Session=Depends(get_sessio
 # test 実装済み
 @router.post("/users/register")
 async def register_new_user(register_info:UserRegisterInfo,session: Session=Depends(get_session)):
-    register_user(session=session,user_name=register_info.user_name,email=register_info.email,age=register_info.age)
+    register_user(session=session,user_name=register_info.user_name,email=register_info.email,age_string=register_info.age)
 
 @router.post("/users/{user_id}/records")
 async def create_new_record(record_info:RecordInfo,session: Session=Depends(get_session)):

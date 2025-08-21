@@ -3,9 +3,9 @@
     <NuxtLayout>
       <div>
         <div class="polygon-bg">
-          <div class="polygon"></div>
-          <div class="polygon"></div>
-          <div class="polygon"></div>
+          <div class="polygon"/>
+          <div class="polygon"/>
+          <div class="polygon"/>
         </div>
         <v-main class="my-10">
           <NuxtPage />
@@ -16,10 +16,6 @@
 </template>
 
 <script setup lang="ts">
-const alert = (msg: string) => {
-  window.alert(msg);
-};
-
 </script>
 
 <style>

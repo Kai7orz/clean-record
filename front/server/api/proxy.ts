@@ -4,8 +4,7 @@ export default defineEventHandler(async (event) => {
   if(!body){
     throw createError({ statusCode: 400, message: "File is not provided"});
   }
-  const filename = body.filename || "upload.png";
-
+ 
   if (!body){
     throw createError({ statusCode: 400, message: "File is not provided."});
   }

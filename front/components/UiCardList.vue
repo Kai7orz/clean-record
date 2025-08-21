@@ -7,7 +7,7 @@
     // emits でクリックされたときに イベントを発火させる，その際にどのrecord_id かの情報を親の CardList component に対して渡す
     // 親から images という配列を props として受け取る
     
-    const props = defineProps<{ images: Image[] | null}>()
+    defineProps<{ images: Image[] | null}>()
     
     const emit = defineEmits<{
         sendRecordId: [number]    
@@ -23,7 +23,7 @@
 <template>
     <v-main class="test-design">
         <swiper-container class="flex">
-            <swiper-slide class="flex justify-center" v-for="image in images">
+            <swiper-slide v-for="image in images" :key="image.image_id" class="flex justify-center">
                 <ui-card 
                     class="m-5"
                     :record_id = image.record_id

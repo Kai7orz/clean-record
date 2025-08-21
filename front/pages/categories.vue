@@ -1,6 +1,5 @@
 <script setup lang="ts">
     const baseUrl = "/api/categories"
-    const categoryName = ref("");
     const postData = reactive({
         categoryName: "",
     })

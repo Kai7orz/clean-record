@@ -11,7 +11,7 @@ export default defineEventHandler( async (event) => {
         category_name: categoryName
     }
     console.log("POST DATA:",postData)
-    const res = await fetch(url,{
+    const _res = await fetch(url,{
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

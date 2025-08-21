@@ -6,6 +6,6 @@
 
 <template>
     <v-sheet class="p-5"  rounded="rounded">
-        <img :src=props.image_url />
+        <img :src=props.image_url >
     </v-sheet>
 </template>

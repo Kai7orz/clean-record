@@ -1,10 +1,8 @@
-<script>
-import UiHeader from "~/components/UiHeader.vue";
+<script setup lang="ts">
 </script>
 
 <template>
-  <header>
-  </header>
+  <header />
   <main>
     <slot />
   </main>

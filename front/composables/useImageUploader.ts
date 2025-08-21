@@ -9,7 +9,7 @@ export const useImageUploader = async (recievedFile: File)=>{
     formData.append('ufile',file) 
     // 生成したFormData オブジェクトをAPI Route へ送信する
     try{
-        const res = await fetch('/api/proxy',{
+        const res = await fetch(url,{
             method: "POST",
             body: formData,
         })

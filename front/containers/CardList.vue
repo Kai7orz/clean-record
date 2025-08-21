@@ -13,7 +13,7 @@
     }
     // Backend から image_url を取得してリスト化する
     // リスト化した image_url を props として <ui-card-list> に渡す 
-    const {data:images,error} = await useFetch('/api/images/getImages',{
+    const {data:images,_error} = await useFetch('/api/images/getImages',{
         method: 'POST',
         body: {userId: props.userId},
     })

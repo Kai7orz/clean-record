@@ -28,7 +28,7 @@
 </script>
 
 <template>
-    <v-text-field bg-color="grey" v-model="postData.userId">
+    <v-text-field v-model="postData.userId" bg-color="grey">
         user id の指定
     </v-text-field>
     <v-text-field v-model="postData.categoryId">
@@ -44,6 +44,6 @@
         image_description: の指定
     </v-text-field>
     <v-btn @click="onClick">
-        情報送信
+        情報送信    
     </v-btn>
 </template>
