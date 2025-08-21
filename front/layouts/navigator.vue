@@ -4,6 +4,7 @@ import UiHeader from "~/components/UiHeader.vue";
 
 <template>
   <header>
+    <ui-header /> 
   </header>
   <main>
     <slot />

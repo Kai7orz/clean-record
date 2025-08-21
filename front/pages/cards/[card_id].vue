@@ -1,4 +1,7 @@
 <script setup lang="ts">
+    definePageMeta({
+        layout: 'navigator'
+    })
     // レコード詳細表示画面の土台
     import CardDetail from '@/containers/CardDetail.vue';
     const route = useRoute()

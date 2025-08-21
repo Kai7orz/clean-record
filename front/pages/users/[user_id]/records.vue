@@ -1,6 +1,9 @@
 <script setup lang="ts">
     import CardList from "@/containers/CardList.vue";
 
+    definePageMeta({
+        layout: 'navigator'
+    })
     const route = useRoute()
     const router = useRouter()
     const onClick = ()=>{

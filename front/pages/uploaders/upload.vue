@@ -1,5 +1,9 @@
 <script setup lang="ts">
 
+    definePageMeta({
+        layout: 'navigator'
+    })
+
     const url = "/api/records/record"
     const fileInput = ref<HTMLInputElement | null >(null)
     const responsedUrl = ref<string>("")
