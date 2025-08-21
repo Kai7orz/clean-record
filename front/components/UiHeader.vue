@@ -7,11 +7,24 @@ const userStore = useUserStore()
 const drawer = ref(false)
 const borderColor = "sm"
 const router = useRouter()
-const userId = userStore.userId
 
 const clickMenu = () => {
-    router.push("/users/"+userId+"/records")
+    router.push("/users/"+userStore.userId+"/records")
 }
+
+const clickRegisterUser = () => {
+    router.push("/users/register")
+}
+
+const clickSelectUser = () => {
+    router.push("/users/select")
+}
+
+const clickUpload = () => {
+    router.push("/uploaders/upload")
+}
+
+
 
 </script>
 
@@ -29,10 +42,13 @@ const clickMenu = () => {
         <v-list-item @click="clickMenu" :border="borderColor">
           <v-list-item-title>Menu</v-list-item-title>
         </v-list-item>
-        <v-list-item :border="borderColor">
-          <v-list-item-title>User</v-list-item-title>
+        <v-list-item @click="clickRegisterUser" :border="borderColor">
+          <v-list-item-title>Register User</v-list-item-title>
         </v-list-item>
-        <v-list-item :border="borderColor">
+        <v-list-item @click="clickSelectUser" :border="borderColor">
+            <v-list-item-title>Select User</v-list-item-title>
+        </v-list-item>
+        <v-list-item @click="clickUpload" :border="borderColor">
           <v-list-item-title>Upload</v-list-item-title>
         </v-list-item>
       </v-list>      
