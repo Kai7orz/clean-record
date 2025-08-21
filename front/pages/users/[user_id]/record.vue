@@ -17,7 +17,7 @@
     })
 
     const onClick = () => {
-        useFetch(url,{
+        $fetch(url.value,{
             method: 'POST',
             body: postData,
         })

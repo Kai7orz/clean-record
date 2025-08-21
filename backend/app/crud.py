@@ -13,8 +13,6 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.exc import IntegrityError,SQLAlchemyError
 
-
-
 # # Create 処理群
 def insert_user(session:Session,user_name:str,email:str,age:int):
     try:

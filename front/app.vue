@@ -1,18 +1,21 @@
 <template>
   <v-app theme="dark">
-  <div>
+    <ui-header class="p-3" />
+    <div>
       <div class="polygon-bg">
         <div class="polygon"></div>
         <div class="polygon"></div>
         <div class="polygon"></div>
       </div>
-      <NuxtPage />
-  </div>
+      <v-main class="my-10">
+        <NuxtPage />
+      </v-main>
+    </div>
   </v-app>
 </template>
 
 <script setup lang="ts">
-import  myFooter  from '@/components/Footer.vue'
+
 const alert = (msg: string) => {
   window.alert(msg);
 };

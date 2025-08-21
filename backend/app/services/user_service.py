@@ -18,9 +18,10 @@ from services.clients.gpt_image_client import call_gpt_with_image
 def fetch_user_with_image(session: Session,user_id: int) -> dict:
     pass 
 
-def register_user(session: Session,user_name:str,email:str,age:int) -> dict:
+def register_user(session: Session,user_name:str,email:str,age_string:str) -> dict:
     # user register validation を記述する必要がある
-    insert_user(session=session,user_name=user_name,email=email,age=age)
+    age_int = int(age_string)
+    insert_user(session=session,user_name=user_name,email=email,age=age_int)
 
 def create_record(session: Session,user_id:int,category_id:int,record_name:str):
     record_create = RecordBase(
