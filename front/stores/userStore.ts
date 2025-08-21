@@ -8,6 +8,7 @@ export const useUserStore = defineStore('user',() => {
     function setUserInformation(id:number,name:string){
         userId.value = id
         userName.value = name 
+        console.log("store -id=>",userId)
     }
 
     return { userId,userName,setUserInformation}

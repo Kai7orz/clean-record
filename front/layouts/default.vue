@@ -9,6 +9,6 @@
 </template>
 
 <script>
-import HeaderSection from "~/components/Header.vue";
+import HeaderSection from "~/components/UiHeader.vue";
 import FooterSection from "~/components/Footer.vue";
 </script>

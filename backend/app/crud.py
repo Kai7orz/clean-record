@@ -1,14 +1,9 @@
-from model import create_table 
 from models.user import User,UserCreate
 from models.record import Record,RecordBase,RecordOutput
 from models.image import Image,ImageCreate 
 from models.category import Category,CategoryBase
 from models.relations import CategoryRecord
 from sqlalchemy.orm import Session
-
-
-# テーブル構築
-create_table() 
 
 # # Create 処理群
 def insert_user(session:Session,user_name:str,email:str,age:int):
