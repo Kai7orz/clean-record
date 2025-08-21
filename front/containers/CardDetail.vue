@@ -10,12 +10,15 @@
         // image をcardlistから props or store で管理して，受け取って表示する
         // pinia で 一覧表示で取得したimage_url を管理しておく（props でrouter経由が手間に感じたから＋一覧表示画面は頻繁アクセスしそうだからキャッシュが効いていい） 
     import { useCardsStore} from '@/stores/cardsStore';
-
+    const props = defineProps<{
+        record_id :number
+    }>();
     const cardsStore = useCardsStore() 
-    const cardInfo = cardsStore.getCardById(2)
+    const cardInfo = cardsStore.getCardById(props.record_id)
     if(cardInfo===null){
         console.log("card info null")
     }
+
 
 </script>
 
